@@ -11,4 +11,5 @@ class Courses(Base):
     title = Column(String(50), nullable=False)
     description = Column(Text, nullable=True)
     duration = Column(Integer, nullable=False)
-    level = Column(String)
+    level = Column(Integer, nullable=False)
+    status = Column(Integer, nullable=False, default=0)
