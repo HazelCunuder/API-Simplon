@@ -1,27 +1,18 @@
-from pydantic import BaseModel, ConfigDict, validate_call
+from pydantic import BaseModel,validate_call, Field, EmailStr
 from datetime import date
 
-class User(BaseModel):
-    id: int
-    last_name: str 
-    first_name: str
-    email: str
-    role: int
-    register_date: date
-
-    model_config = ConfigDict(str_max_length=10)
     
 class UserCreate(BaseModel):
-    last_name: str 
-    first_name: str
-    email: str
-    role: int
-    register_date: date
+    last_name: str = Field(..., description="The user's last name", strict=True)
+    first_name: str = Field(..., description="The user's first name", strict=True)
+    email: EmailStr = Field(..., description="The user's email address", strict=True)
+    role: int = Field(..., description="The user's role (0=Admin, 1=Manager, 2=Employee)", ge=0, le=2)
+    register_date: date = Field(..., description="The date the user registered")
 
 class UserUpdate(BaseModel):
     last_name: str | None
     first_name: str | None
-    email: str | None
+    email: EmailStr | None
     role: int | None
     register_date: date | None
 
@@ -41,17 +32,6 @@ def validate_last_name(last_name: str) -> str:
         raise ValueError("Last name must contain only letters")
     return last_name
 
-@validate_call
-def validate_mail(email: str) -> str:
-    if "@" not in email:
-        raise ValueError("Invalid email address")
-    return email
-
-@validate_call
-def validate_role(role: int) -> int:
-    if role not in [0, 1, 2]:
-        raise ValueError("Invalid role value")
-    return role
 
 @validate_call
 def validate_register_date(register_date: date) -> date:
