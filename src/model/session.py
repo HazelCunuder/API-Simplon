@@ -2,7 +2,6 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import relationship, mapped_column
 from datetime import date
-from model.user import User
 from model.database import Base
 
 class Session(Base):

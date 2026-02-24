@@ -2,7 +2,6 @@ from typing import List
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import date
-from model.session import Session
 from enum import IntEnum
 from model.database import Base
 
