@@ -1,6 +1,13 @@
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column
 from model.database import Base
+from enum import IntEnum
+
+class Level(IntEnum):
+    BEGINNER = 0
+    INTERMEDIATE = 1
+    ADVANCED = 2
+    EXPERT = 3
 
 class Course(Base):
 
@@ -10,4 +17,4 @@ class Course(Base):
     title: Mapped[str] = mapped_column(String(50), nullable=False)
     description: Mapped[str] = mapped_column(nullable=True)
     duration: Mapped[int] = mapped_column(nullable=False)
-    level: Mapped[str] = mapped_column()
+    level: Mapped[Level] = mapped_column(nullable=False, default=Level.BEGINNER)
