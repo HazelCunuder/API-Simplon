@@ -22,7 +22,10 @@ class ShowCoursesSchema(BaseModel):
     status : int
 
 class ShowSimpleCourseInfoSchema(BaseModel):
-    title : str
+    title: str
     duration: int
     level: int
+
+    class Config:
+        from_attributes = True
 
