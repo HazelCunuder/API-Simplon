@@ -2,12 +2,12 @@ from fastapi import APIRouter, Depends
 from services.courses_services import CourseService
 from repositories.course_repository import CourseRepository
 from schemas.courses_schema import CoursesCreateSchema, ModifyCoursesSchema, ShowCoursesSchema, ShowSimpleCourseInfoSchema
-from configs.database import get_db_connection
+from model.database import get_db
 from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/courses", tags=["courses"])
 
-def get_course_service(db: Session = Depends(get_db_connection)) -> CourseService:
+def get_course_service(db: Session = Depends(get_db)) -> CourseService:
     return CourseService(repo=CourseRepository(db=db))
 
 @router.get("/", response_model=ShowCoursesSchema)
