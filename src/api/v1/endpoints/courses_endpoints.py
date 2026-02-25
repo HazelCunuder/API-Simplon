@@ -1,36 +1,35 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from services.courses_services import CourseService
+from repositories.course_repository import CourseRepository
 from schemas.courses_schema import CoursesCreateSchema, ModifyCoursesSchema, ShowCoursesSchema, ShowSimpleCourseInfoSchema
+from configs.database import get_db_connection
+from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/courses", tags=["courses"])
 
-# GET
+def get_course_service(db: Session = Depends(get_db_connection)) -> CourseService:
+    return CourseService(repo=CourseRepository(db=db))
 
-@router.get("/")
-async def get_courses(course: ShowCoursesSchema):
-    return {"message": "Get all courses"}
+@router.get("/", response_model=ShowCoursesSchema)
+async def get_courses(service: CourseService = Depends(get_course_service)):
+    return service.get_courses()
 
 @router.get("/{course_id}")
-async def get_course(course_id: int, course: ShowCoursesSchema):
-    return {"message": f"Get course with id {course_id}"}
+async def get_course(course_id: int, service: CourseService = Depends(get_course_service)):
+    return service.get_course(course_id)
 
-@router.get("/{course_id}/simple")
-async def get_simple_course_info(course_id: int, course: ShowSimpleCourseInfoSchema):
-    return {"message": f"Get simple info for course with id {course_id}"}
+@router.get("/{course_id}/simple-info", response_model=ShowSimpleCourseInfoSchema)
+async def get_simple_course_info(course_id: int, service: CourseService = Depends(get_course_service)):
+    return service.get_simple_course_info(course_id)
 
-# POST
+@router.post("/update/{course_id}")
+async def update_course(course_id: int, course: ModifyCoursesSchema, service: CourseService = Depends(get_course_service)):
+    return service.update_course(course_id, course)
 
-@router.post("/")
-async def create_course(course: CoursesCreateSchema):
-    return {"message": "Create a new course", "course": course}
+@router.post("/create-course")
+async def create_course(course: CoursesCreateSchema, service: CourseService = Depends(get_course_service)):
+    return service.create(course)
 
-# PUT
-
-@router.put("/{course_id}")
-async def update_course(course_id: int, course: ModifyCoursesSchema):
-    return {"message": f"Update course with id {course_id}", "course": course}
-
-# DELETE
-
-@router.delete("/{course_id}")
-async def delete_course(course_id: int):
-    return {"message": f"Delete course with id {course_id}"}
+@router.delete("/delete/{course_id}")
+async def delete_course(course_id: int, service: CourseService = Depends(get_course_service)):
+    return service.delete_course(course_id)
