@@ -1,8 +1,8 @@
 """Initial migration
 
-Revision ID: 8a71b33d855b
+Revision ID: 6c0f2b6936c9
 Revises: 
-Create Date: 2026-02-24 14:14:55.560509
+Create Date: 2026-02-25 13:28:32.511994
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '8a71b33d855b'
+revision: str = '6c0f2b6936c9'
 down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -26,7 +26,7 @@ def upgrade() -> None:
     sa.Column('title', sa.String(length=50), nullable=False),
     sa.Column('description', sa.String(), nullable=True),
     sa.Column('duration', sa.Integer(), nullable=False),
-    sa.Column('level', sa.String(), nullable=False),
+    sa.Column('level', sa.Enum('BEGINNER', 'INTERMEDIATE', 'ADVANCED', 'EXPERT', name='level'), nullable=False),
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user_table',
@@ -34,6 +34,7 @@ def upgrade() -> None:
     sa.Column('last_name', sa.String(length=50), nullable=False),
     sa.Column('first_name', sa.String(length=50), nullable=False),
     sa.Column('email', sa.String(), nullable=False),
+    sa.Column('password', sa.String(), nullable=False),
     sa.Column('role', sa.Enum('ADMIN', 'TEACHER', 'STUDENT', name='role'), nullable=False),
     sa.Column('register_date', sa.Date(), nullable=False),
     sa.PrimaryKeyConstraint('id'),

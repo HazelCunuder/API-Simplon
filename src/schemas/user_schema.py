@@ -1,7 +1,16 @@
-from pydantic import BaseModel,validate_call, Field, EmailStr, SecretStr
+from pydantic import BaseModel, validate_call, Field, EmailStr, SecretStr, ConfigDict
 from datetime import date
 
-    
+class UserRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int = Field(description="The user's ID", ge=0)
+    first_name: str = Field(description="The user's last name", strict=True)
+    last_name: str = Field(description="The user's last name", strict=True)
+    email: EmailStr = Field(description="The user's email address", strict=True)
+    role: int = Field(description="The user's role (0=Admin, 1=Manager, 2=Employee)", ge=0, le=2)
+    register_date: date = Field(description="The date the user registered")
+
 class UserCreate(BaseModel):
     last_name: str = Field(description="The user's last name", strict=True)
     first_name: str = Field(description="The user's first name", strict=True)

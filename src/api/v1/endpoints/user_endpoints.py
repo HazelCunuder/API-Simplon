@@ -1,19 +1,34 @@
-from fastapi import APIRouter, status
+from fastapi import APIRouter, status, Depends
 from schemas.user_schema import UserCreate, UserUpdate
+from services.user_service import UserService
 
 router = APIRouter(prefix="/user", tags=["user"])
 
-@router.post("/users", status_code=status.HTTP_201_CREATED)
-async def create_user(user: UserCreate):
-    # TODO : call service
-    return {"message": "User created", "data": user}
+@router.get("/{user_id}", status_code=status.HTTP_200_OK)
+async def get_user(
+    user_id: int,
+    service: UserService = Depends()
+):
+    return service.get_user(user_id)
 
-@router.put("/users/{user_id}")
-async def update_user(user_id: int, user: UserUpdate):
-    # TODO : call service
-    return {"message": f"User {user_id} updated"}
+@router.post("/", status_code=status.HTTP_201_CREATED)
+async def create_user(
+    user: UserCreate,
+    service: UserService = Depends()
+):
+    return service.create_user(user)
 
-@router.delete("/users/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_user(user_id: int):
-    # TODO : call service
-    return None
+@router.put("/{user_id}")
+async def update_user(
+    user_id: int,
+    user: UserUpdate,
+    service: UserService = Depends()
+):
+    return service.update_user(user_id, user)
+
+@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+async def delete_user(
+    user_id: int,
+    service: UserService = Depends()
+):
+    return service.delete_user(user_id)
