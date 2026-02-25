@@ -15,12 +15,5 @@ async def update_session(session_id: int, session: SessionUpdate):
 
 @router.get("/sessions/{session_id}", response_model=SessionRead)
 async def get_session(session_id: int):
-    # TODO : call service
-    return {"message": f"Session {session_id} details", "data": SessionRead(
-        id=session_id,
-        teacher_id=1,
-        course_id=1,
-        start_date="2024-01-01",
-        end_date="2024-01-10",
-        capacity=30
-    )}
+    # TODO : call service 
+    return None
