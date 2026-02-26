@@ -2,12 +2,12 @@ from fastapi import APIRouter, Depends
 from services.courses_services import CourseService
 from repositories.course_repository import CourseRepository
 from schemas.courses_schema import CoursesCreateSchema, ModifyCoursesSchema, ShowCoursesSchema, ShowSimpleCourseInfoSchema
-from configs.database import get_db_connection
+from model.database import get_db
 from sqlalchemy.orm import Session
 
 router = APIRouter(prefix="/courses", tags=["courses"])
 
-def get_course_service(db: Session = Depends(get_db_connection)) -> CourseService:
+def get_course_service(db: Session = Depends(get_db)) -> CourseService:
     return CourseService(repo=CourseRepository(db=db))
 
 @router.get("/", response_model=ShowCoursesSchema)
@@ -22,7 +22,7 @@ async def get_course(course_id: int, service: CourseService = Depends(get_course
 async def get_simple_course_info(course_id: int, service: CourseService = Depends(get_course_service)):
     return service.get_simple_course_info(course_id)
 
-@router.post("/update/{course_id}")
+@router.put("/update/{course_id}")
 async def update_course(course_id: int, course: ModifyCoursesSchema, service: CourseService = Depends(get_course_service)):
     return service.update_course(course_id, course)
 
