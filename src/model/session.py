@@ -16,4 +16,4 @@ class Session(Base):
     capacity: Mapped[int] = mapped_column()
     
     teacher: Mapped["User"] = relationship(back_populates="sessions")
-    enrollments: Mapped[List["StudentEnrollment"]] = relationship(back_populates="session")
+    enrollments: Mapped[List["UserSession"]] = relationship(back_populates="session")

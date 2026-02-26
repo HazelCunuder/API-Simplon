@@ -22,4 +22,4 @@ class User(Base):
     register_date: Mapped[date] = mapped_column(nullable=False)
     
     sessions: Mapped[List["Session"]] = relationship(back_populates="teacher")
-    enrollments: Mapped[List["StudentEnrollment"]] = relationship(back_populates="user")
+    enrollments: Mapped[List["UserSession"]] = relationship(back_populates="user")

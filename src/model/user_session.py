@@ -1,5 +1,6 @@
 from sqlalchemy import ForeignKey, UniqueConstraint
-from sqlalchemy.orm import Mapped, relationship, mapped_column
+from sqlalchemy.orm import Mapped
+from sqlalchemy.orm import relationship, mapped_column
 from datetime import date
 from model.database import Base
 
@@ -10,7 +11,7 @@ class UserSession(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey('user_table.id'))
     session_id: Mapped[int] = mapped_column(ForeignKey('session_table.id'))
     enrollment_date: Mapped[date] = mapped_column()
-    
+
     user: Mapped["User"] = relationship(back_populates="enrollments")
     session: Mapped["Session"] = relationship(back_populates="enrollments")
     
