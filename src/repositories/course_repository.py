@@ -1,15 +1,13 @@
 from typing import List, Optional
 from fastapi import Depends
 from sqlalchemy.orm import Session
-from configs.database import (
-    get_db_connection,
-)
+from model.database import get_db
 
 from model.course import Course
 from schemas.courses_schema import CoursesCreateSchema, ModifyCoursesSchema, ShowCoursesSchema, ShowSimpleCourseInfoSchema
 
 class CourseRepository:
-    def __init__(self, db: Session = Depends(get_db_connection)):
+    def __init__(self, db: Session = Depends(get_db)):
         self.db = db
 
     def get_all_courses(self) -> List[Course]:
