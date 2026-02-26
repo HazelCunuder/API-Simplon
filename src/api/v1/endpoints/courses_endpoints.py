@@ -22,7 +22,7 @@ async def get_course(course_id: int, service: CourseService = Depends(get_course
 async def get_simple_course_info(course_id: int, service: CourseService = Depends(get_course_service)):
     return service.get_simple_course_info(course_id)
 
-@router.post("/update/{course_id}")
+@router.put("/update/{course_id}")
 async def update_course(course_id: int, course: ModifyCoursesSchema, service: CourseService = Depends(get_course_service)):
     return service.update_course(course_id, course)
 
