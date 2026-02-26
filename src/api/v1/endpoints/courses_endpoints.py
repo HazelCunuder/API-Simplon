@@ -4,6 +4,7 @@ from repositories.course_repository import CourseRepository
 from schemas.courses_schema import CoursesCreateSchema, ModifyCoursesSchema, ShowCoursesSchema, ShowSimpleCourseInfoSchema
 from model.database import get_db
 from sqlalchemy.orm import Session
+from utils.security import verify_token
 
 router = APIRouter(prefix="/courses", tags=["courses"])
 
@@ -24,12 +25,15 @@ async def get_simple_course_info(course_id: int, service: CourseService = Depend
 
 @router.put("/update/{course_id}")
 async def update_course(course_id: int, course: ModifyCoursesSchema, service: CourseService = Depends(get_course_service)):
+    _: dict = Depends(verify_token)
     return service.update_course(course_id, course)
 
 @router.post("/create-course")
 async def create_course(course: CoursesCreateSchema, service: CourseService = Depends(get_course_service)):
+    _: dict = Depends(verify_token)
     return service.create(course)
 
 @router.delete("/delete/{course_id}")
 async def delete_course(course_id: int, service: CourseService = Depends(get_course_service)):
+    _: dict = Depends(verify_token)
     return service.delete_course(course_id)
