@@ -52,50 +52,132 @@ Actuellement, Simplon gère ses opérations de manière disparate :
 ### Structure du projet
 
 ```
-src/
-├── api/                           # Endpoints et routeurs
-│   └── v1/
-│       ├── endpoints/             # Implémentation des endpoints
-│       │   ├── auth_endpoints.py
-│       │   ├── user_endpoints.py
-│       │   ├── courses_endpoints.py
-│       │   ├── session_endpoints.py
-│       │   └── user_session_endpoints.py
-│       └── routers/
-│           └── api.py             # Assemblage des routeurs
-├── model/                         # Modèles de données (ORM)
-│   ├── user.py
-│   ├── course.py
-│   ├── session.py
-│   ├── user_session.py
-│   └── database.py
-├── repositories/                  # Couche d'accès aux données
-│   ├── user_repository.py
-│   ├── course_repository.py
-│   ├── session_repository.py
-│   └── user_session_repo.py
-├── services/                      # Logique métier
-│   ├── auth_service.py
-│   ├── user_service.py
-│   ├── courses_services.py
-│   ├── session_services.py
-│   └── user_session_services.py
-├── schemas/                       # DTOs (validation et sérialisation)
-│   ├── auth_schema.py
-│   ├── user_schema.py
-│   ├── courses_schema.py
-│   ├── sessions_schema.py
-│   └── user_session_schema.py
-├── utils/                         # Utilitaires
-│   ├── security.py                # Authentification JWT
-│   ├── exceptions.py              # Exceptions personnalisées
-│   └── logger.py
-├── tests/                         # Tests automatisés
-│   ├── user_test.py
-│   ├── course_test.py
-│   ├── session_test.py
-│   └── user_sessions_test.py
-└── main.py                        # Point d'entrée de l'application
+.
+├── README.md
+├── alembic
+│   ├── README
+│   ├── __pycache__
+│   │   └── env.cpython-312.pyc
+│   ├── env.py
+│   ├── script.py.mako
+│   └── versions
+│       ├── 3a2ab05c3db3_.py
+│       ├── 7430e7d00ab6_.py
+│       ├── __pycache__
+│       │   ├── 3a2ab05c3db3_.cpython-312.pyc
+│       │   ├── 7430e7d00ab6_.cpython-312.pyc
+│       │   └── babf7148b574_.cpython-312.pyc
+│       └── babf7148b574_.py
+├── alembic.ini
+├── assets
+│   └── MCD.png
+├── requirements.txt
+└── src
+    ├── __pycache__
+    │   └── main.cpython-312.pyc
+    ├── api
+    │   ├── __pycache__
+    │   │   └── __init__.cpython-312.pyc
+    │   └── v1
+    │       ├── __init__.py
+    │       ├── __pycache__
+    │       │   └── __init__.cpython-312.pyc
+    │       ├── endpoints
+    │       │   ├── __init__.py
+    │       │   ├── __pycache__
+    │       │   │   ├── __init__.cpython-312.pyc
+    │       │   │   ├── auth_endpoints.cpython-312.pyc
+    │       │   │   ├── courses_endpoints.cpython-312.pyc
+    │       │   │   ├── session_endpoints.cpython-312.pyc
+    │       │   │   ├── user_endpoints.cpython-312.pyc
+    │       │   │   └── user_session_endpoints.cpython-312.pyc
+    │       │   ├── auth_endpoints.py
+    │       │   ├── courses_endpoints.py
+    │       │   ├── session_endpoints.py
+    │       │   ├── user_endpoints.py
+    │       │   └── user_session_endpoints.py
+    │       └── routers
+    │           ├── __init__.py
+    │           ├── __pycache__
+    │           │   ├── __init__.cpython-312.pyc
+    │           │   └── api.cpython-312.pyc
+    │           └── api.py
+    ├── configs
+    │   └── __pycache__
+    │       ├── __init__.cpython-312.pyc
+    │       └── database.cpython-312.pyc
+    ├── main.py
+    ├── model
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-312.pyc
+    │   │   ├── course.cpython-312.pyc
+    │   │   ├── database.cpython-312.pyc
+    │   │   ├── session.cpython-312.pyc
+    │   │   ├── user.cpython-312.pyc
+    │   │   └── user_session.cpython-312.pyc
+    │   ├── course.py
+    │   ├── database.py
+    │   ├── session.py
+    │   ├── user.py
+    │   └── user_session.py
+    ├── repositories
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-312.pyc
+    │   │   ├── course_repository.cpython-312.pyc
+    │   │   ├── session_repository.cpython-312.pyc
+    │   │   ├── user_repository.cpython-312.pyc
+    │   │   └── user_session_repo.cpython-312.pyc
+    │   ├── course_repository.py
+    │   ├── session_repository.py
+    │   ├── user_repository.py
+    │   └── user_session_repo.py
+    ├── requirements.txt
+    ├── schemas
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-312.pyc
+    │   │   ├── auth_schema.cpython-312.pyc
+    │   │   ├── courses_schema.cpython-312.pyc
+    │   │   ├── sessions_schema.cpython-312.pyc
+    │   │   ├── user_schema.cpython-312.pyc
+    │   │   └── user_session_schema.cpython-312.pyc
+    │   ├── auth_schema.py
+    │   ├── courses_schema.py
+    │   ├── sessions_schema.py
+    │   ├── user_schema.py
+    │   └── user_session_schema.py
+    ├── services
+    │   ├── __init__.py
+    │   ├── __pycache__
+    │   │   ├── __init__.cpython-312.pyc
+    │   │   ├── auth_service.cpython-312.pyc
+    │   │   ├── courses_services.cpython-312.pyc
+    │   │   ├── session_services.cpython-312.pyc
+    │   │   ├── user_service.cpython-312.pyc
+    │   │   └── user_session_services.cpython-312.pyc
+    │   ├── auth_service.py
+    │   ├── courses_services.py
+    │   ├── session_services.py
+    │   ├── user_service.py
+    │   └── user_session_services.py
+    ├── tests
+    │   ├── __init__.py
+    │   ├── course_test.py
+    │   ├── session_test.py
+    │   ├── user_sessions_test.py
+    │   └── user_test.py
+    └── utils
+        ├── __init__.py
+        ├── __pycache__
+        │   ├── __init__.cpython-312.pyc
+        │   ├── exceptions.cpython-312.pyc
+        │   ├── logger.cpython-312.pyc
+        │   └── security.cpython-312.pyc
+        ├── exceptions.py
+        ├── logger.py
+        └── security.py
 ```
 
 ### Architecture en couches
