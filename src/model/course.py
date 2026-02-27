@@ -9,11 +9,6 @@ class Level(IntEnum):
     ADVANCED = 2
     EXPERT = 3
 
-class Status(IntEnum):
-    PLANNED = 0
-    ONGOING = 1
-    DONE = 2
-
 class Course(Base):
 
     __tablename__ = "course_table"
@@ -23,4 +18,3 @@ class Course(Base):
     description: Mapped[str] = mapped_column(nullable=True)
     duration: Mapped[int] = mapped_column(nullable=False)
     level: Mapped[int] = mapped_column(nullable=False, default=int(Level.BEGINNER))
-    status: Mapped[int] = mapped_column(nullable=False, default=int(Status.PLANNED))
