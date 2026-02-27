@@ -2,13 +2,13 @@ from typing import List
 from sqlalchemy import String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from datetime import date
-from enum import IntEnum
+from enum import Enum
 from model.database import Base
 
-class Role(IntEnum):
-    ADMIN = 0
-    TEACHER = 1
-    STUDENT = 2
+class Role(str, Enum):
+    ADMIN = "ADMIN"
+    TEACHER = "TEACHER"
+    STUDENT = "STUDENT"
 
 class User(Base):
     __tablename__ = "user_table"
@@ -18,8 +18,9 @@ class User(Base):
     first_name: Mapped[str] = mapped_column(String(50), nullable=False)
     email: Mapped[str] = mapped_column(unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
-    role: Mapped[int] = mapped_column(nullable=False, default=int(Role.STUDENT))
+    role: Mapped[Role] = mapped_column(nullable=False, default=Role.STUDENT)
     register_date: Mapped[date] = mapped_column(nullable=False)
-    
-    sessions: Mapped[List["Session"]] = relationship(back_populates="teacher")
+    is_active: Mapped[bool] = mapped_column(nullable=False, default=True)
+    last_login_date: Mapped[date] = mapped_column(nullable=False)
+
     enrollments: Mapped[List["UserSession"]] = relationship(back_populates="user")
