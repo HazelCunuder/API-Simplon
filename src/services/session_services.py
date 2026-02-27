@@ -34,7 +34,8 @@ class SessionService:
                 course_id=session_data.course_id,
                 start_date=session_data.start_date,
                 end_date=session_data.end_date,
-                capacity=session_data.capacity
+                capacity=session_data.capacity,
+                status=session_data.status
             )
             self.repo.db.add(db_session)
             self.repo.db.commit()
