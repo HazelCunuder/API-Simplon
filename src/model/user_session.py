@@ -11,6 +11,7 @@ class UserSession(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey('user_table.id'))
     session_id: Mapped[int] = mapped_column(ForeignKey('session_table.id'))
     enrollment_date: Mapped[date] = mapped_column()
+    is_active: Mapped[bool] = mapped_column(nullable=False, default=True)
 
     user: Mapped["User"] = relationship(back_populates="enrollments")
     session: Mapped["Session"] = relationship(back_populates="enrollments")
