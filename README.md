@@ -54,56 +54,20 @@ Actuellement, Simplon gère ses opérations de manière disparate :
 ```
 .
 ├── alembic
-│   ├── README
-│   ├── env.py
 │   └── versions
 ├── assets
-│   └── MCD.png
 ├──src
 │   ├── api
 │   │   └── v1
 │   │       ├── endpoints
-│   │       │   ├── auth_endpoints.py
-│   │       │   ├── courses_endpoints.py
-│   │       │   ├── session_endpoints.py
-│   │       │   ├── user_endpoints.py
-│   │       │   └── user_session_endpoints.py
 │   │       └── routers
-│   │           └── api.py
-│   ├── main.py
 │   ├── model
-│   │   ├── course.py
-│   │   ├── database.py
-│   │   ├── session.py
-│   │   ├── user.py
-│   │   └── user_session.py
 │   ├── repositories
-│   │   ├── course_repository.py
-│   │   ├── session_repository.py
-│   │   ├── user_repository.py
-│   │   └── user_session_repo.py
-│   ├── requirements.txt
 │   ├── schemas
-│   │   ├── auth_schema.py
-│   │   ├── courses_schema.py
-│   │   ├── sessions_schema.py
-│   │   ├── user_schema.py
-│   │   └── user_session_schema.py
 │   ├── services
-│   │   ├── auth_service.py
-│   │   ├── courses_services.py
-│   │   ├── session_services.py
-│   │   ├── user_service.py
-│   │   └── user_session_services.py
 │   ├── tests
-│   │   ├── course_test.py
-│   │   ├── session_test.py
-│   │   ├── user_sessions_test.py
-│   │   └── user_test.py
-│   └── utils
-│       ├── exceptions.py
-│       ├── logger.py
-│       └── security.py
+│   ├── utils
+│   └── main.py
 ├── requirements.txt
 └── README.md
 ```
