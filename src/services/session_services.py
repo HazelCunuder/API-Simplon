@@ -145,3 +145,26 @@ class SessionService:
         self.repo.db.delete(db_session)
         self.repo.db.commit()
         return True
+    
+    def soft_delete_session(self, session_id: int):
+        """
+        Soft deletes a session by marking its is_active field as False.
+
+        Args:
+            session_id (int): The unique identifier of the session to soft delete.
+        Returns:
+            bool: True if the soft deletion was successful.
+        Raises:
+            HTTPException: With status code 404 if the session is not found.
+        """        
+        db_session = self.repo.db.query(SessionModel).filter(SessionModel.id == session_id).first()
+        if not db_session:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="Session not found"
+            )
+
+        db_session.is_active = False
+        self.repo.db.commit()
+        self.repo.db.refresh(db_session)
+        return True

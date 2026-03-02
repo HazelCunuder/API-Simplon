@@ -23,7 +23,7 @@ async def create_user(
 ):
     return service.create_user(user)
 
-@router.put("/{user_id}", response_model=UserRead)
+@router.patch("/{user_id}", response_model=UserRead, status_code=status.HTTP_200_OK)
 async def update_user(
     user_id: int,
     user: UserUpdate,
@@ -40,3 +40,11 @@ async def delete_user(
     service: UserService = Depends()
 ):
     return service.delete_user(user_id)
+
+@router.patch("/soft-delete/{user_id}", status_code=status.HTTP_200_OK)
+async def soft_delete_user(
+    user_id: int,
+    _: dict = Depends(verify_token),
+    service: UserService = Depends()
+):
+    return service.soft_delete_user(user_id)
