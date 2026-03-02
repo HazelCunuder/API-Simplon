@@ -2,25 +2,12 @@ from pydantic import BaseModel
 from datetime import date
 from model.user import Role
 
-
 class UserDetail(BaseModel):
     id: int
     first_name: str
     last_name: str
     email: str
     role: Role
-
-    class Config:
-        from_attributes = True
-
-
-class SessionDetail(BaseModel):
-    id: int
-    teacher_id: int
-    course_id: int
-    start_date: date
-    end_date: date
-    capacity: int
 
     class Config:
         from_attributes = True
@@ -52,7 +39,6 @@ class EnrollmentDetail(BaseModel):
 
 class StudentsBySessionResponse(BaseModel):
     session_id: int
-    teacher_id: int
     students: list[EnrollmentDetail]
 
     class Config:

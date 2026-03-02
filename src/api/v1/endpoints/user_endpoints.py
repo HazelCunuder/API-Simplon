@@ -1,5 +1,4 @@
 from fastapi import APIRouter, status, Depends
-
 from model.user import Role
 from schemas.user_schema import UserCreate, UserUpdate, UserRead
 from services.user_service import UserService

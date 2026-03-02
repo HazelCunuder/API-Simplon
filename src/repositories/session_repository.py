@@ -44,7 +44,6 @@ class SessionRepository:
             SessionModel: The newly created session object with database-generated ID.
         """
         db_session = SessionModel(
-            teacher_id=session_data.teacher_id,
             course_id=session_data.course_id,
             start_date=session_data.start_date,
             end_date=session_data.end_date,

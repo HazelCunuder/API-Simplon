@@ -1,6 +1,5 @@
 from fastapi import FastAPI, Request
 from api.v1.routers.api import api_router
-from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from utils.exceptions import (

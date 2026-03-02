@@ -62,7 +62,7 @@ class SessionService:
 
         Args:
             session_data (SessionCreate): Validated session creation data including
-                teacher_id, course_id, start_date, end_date, capacity, and optional status.
+                course_id, start_date, end_date, capacity, and optional status.
 
         Returns:
             SessionModel: The created session object with database-generated ID.

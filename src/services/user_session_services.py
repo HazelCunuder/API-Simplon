@@ -1,7 +1,6 @@
 from sqlalchemy.orm import Session as DBSession
 from model.user_session import UserSession
-from model.user import User, Role
-from model.session import Session
+from model.user import Role
 from repositories.user_session_repo import UserSessionRepository
 from repositories.user_repository import UserRepository
 from repositories.session_repository import SessionRepository

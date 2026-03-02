@@ -1,7 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session as DBSession
 from model.user import Role
-from repositories.session_repository import SessionRepository
 from schemas.user_session_schema import EnrollmentCreate, EnrollmentResponse, SessionsByStudentResponse, StudentsBySessionResponse, EnrollmentDetail
 from model.database import get_db
 from services.user_session_services import UserSessionService
@@ -30,10 +29,8 @@ def get_sessions_by_student(user_id: int, _: dict = Depends(verify_token), db: D
 def get_students_by_session(session_id: int, _: dict = Depends(verify_token), db: DBSession = Depends(get_db)):
     try:
         enrollments = UserSessionService(db).get_students_by_session(session_id)
-        session = enrollments[0].session if enrollments else SessionRepository(db).get_by_id(session_id)
         return StudentsBySessionResponse(
             session_id=session_id,
-            teacher_id=session.teacher_id,
             students=enrollments
         )
     except ValueError as e:
