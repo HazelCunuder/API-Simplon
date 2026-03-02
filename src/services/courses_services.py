@@ -115,7 +115,7 @@ class CourseService:
             raise ValueError(f"Course with ID {course_id} does not exist.")
         return self.repo.delete_course(course_id)
     
-    def delete_soft_course(self, course_id: int):
+    def soft_delete_course(self, course_id: int):
         """
         Soft delete a course by its ID.
 
@@ -130,4 +130,4 @@ class CourseService:
         """
         if self.repo.get_course_by_id(course_id) is None:
             raise ValueError(f"Course with ID {course_id} does not exist.")
-        return self.repo.delete_soft_course(course_id)
+        return self.repo.soft_delete(course_id)
