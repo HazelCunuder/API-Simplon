@@ -1,4 +1,4 @@
-from sqlalchemy import String
+from sqlalchemy import String, Enum as SQLEnum
 from sqlalchemy.orm import Mapped, mapped_column
 from model.database import Base
 from enum import Enum
@@ -17,5 +17,5 @@ class Course(Base):
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[str] = mapped_column(nullable=True)
     duration: Mapped[int] = mapped_column(nullable=False)
-    level: Mapped[Level] = mapped_column(nullable=False, default=Level.BEGINNER)
+    level: Mapped[Level] = mapped_column(SQLEnum(Level, native_enum=True), nullable=False, default=Level.BEGINNER)
     is_active: Mapped[bool] = mapped_column(nullable=False, default=True)
