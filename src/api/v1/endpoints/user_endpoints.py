@@ -20,7 +20,7 @@ async def create_user(
 ):
     return service.create_user(user)
 
-@router.put("/{user_id}")
+@router.patch("/{user_id}", status_code=status.HTTP_200_OK)
 async def update_user(
     user_id: int,
     user: UserUpdate,
