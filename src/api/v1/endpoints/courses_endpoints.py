@@ -133,3 +133,20 @@ async def delete_course(course_id: int, _: dict = Depends(verify_token), service
         HTTPException: If the course is not found (propagated from the service layer).
     """
     return service.delete_course(course_id)
+
+@router.patch("/delete-soft/{course_id}")
+async def delete_soft_course(course_id: int, _: dict = Depends(verify_token), service: CourseService = Depends(get_course_service)):
+    """
+    Soft delete a course by its ID.
+
+    Requires a valid authentication token.
+
+    Args:
+        course_id (int): The ID of the course to soft delete.
+        service (CourseService): The course service instance, injected via dependency.
+
+    Returns:
+        bool: True if the course was successfully soft deleted. 
+    Raises:        HTTPException: If the course is not found (propagated from the service layer).
+    """
+    return service.delete_soft_course(course_id)

@@ -113,3 +113,21 @@ class CourseRepository:
         self.db.delete(course)
         self.db.commit()
         return True
+    
+    def delete_soft_course(self, course_id: int) -> bool:
+        """
+        Soft delete a course by setting its 'is_deleted' flag to True.
+
+        Args:
+            course_id (int): The ID of the course to soft delete.
+
+        Returns:
+            bool: True if the course was found and soft deleted, False otherwise.
+        """
+        course = self.get_course_by_id(course_id)
+        if not course:
+            return False
+        course.is_active = False
+        self.db.commit()
+        self.db.refresh(course)
+        return True

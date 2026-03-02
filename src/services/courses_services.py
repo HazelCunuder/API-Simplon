@@ -114,3 +114,20 @@ class CourseService:
         if self.repo.get_course_by_id(course_id) is None:
             raise ValueError(f"Course with ID {course_id} does not exist.")
         return self.repo.delete_course(course_id)
+    
+    def delete_soft_course(self, course_id: int):
+        """
+        Soft delete a course by its ID.
+
+        Args:
+            course_id (int): The ID of the course to soft delete.
+
+        Returns:
+            The result of the soft deletion operation from the repository.
+
+        Raises:
+            ValueError: If no course with the given ID exists.
+        """
+        if self.repo.get_course_by_id(course_id) is None:
+            raise ValueError(f"Course with ID {course_id} does not exist.")
+        return self.repo.delete_soft_course(course_id)

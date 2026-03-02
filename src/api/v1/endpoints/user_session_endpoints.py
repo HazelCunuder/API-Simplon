@@ -58,3 +58,10 @@ def unenroll_student(user_id: int, session_id: int,_: dict = Depends(verify_toke
         UserSessionService(db).unenroll_student(user_id, session_id)
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+    
+@router.patch("/delete-soft/{enrollment_id}", status_code=204)
+def soft_delete_enrollment(enrollment_id: int, _: dict = Depends(verify_token), db: DBSession = Depends(get_db)):
+    try:
+        UserSessionService(db).soft_delete_enrollment(enrollment_id)
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
