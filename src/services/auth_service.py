@@ -6,7 +6,7 @@ from repositories.user_repository import UserRepository
 from schemas.auth_schema import TokenResponse
 from utils.exceptions import InvalidCredentialsError
 from utils.security import verify_password, create_access_token
-from datetime import date
+
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -26,6 +26,8 @@ class AuthService:
             data={"sub": str(user.id)},
             expires_delta=access_token_expires
         )
+
+        self.repo.update_last_login(user.id)
 
         return TokenResponse(
             access_token=access_token,
