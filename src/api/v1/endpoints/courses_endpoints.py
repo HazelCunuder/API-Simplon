@@ -99,7 +99,7 @@ async def update_course(course_id: int, course: ModifyCoursesSchema, service: Co
 
 
 @router.post("/create-course")
-async def create_course(course: CoursesCreateSchema, service: CourseService = Depends(get_course_service)):
+async def create_course(course: CoursesCreateSchema, _: dict = Depends(verify_token), service: CourseService = Depends(get_course_service)):
     """
     Create a new course.
 
@@ -112,12 +112,11 @@ async def create_course(course: CoursesCreateSchema, service: CourseService = De
     Returns:
         Course: The newly created course record.
     """
-    _: dict = Depends(verify_token)
     return service.create(course)
 
 
 @router.delete("/delete/{course_id}")
-async def delete_course(course_id: int, service: CourseService = Depends(get_course_service)):
+async def delete_course(course_id: int, _: dict = Depends(verify_token), service: CourseService = Depends(get_course_service)):
     """
     Delete a course by its ID.
 
@@ -133,5 +132,4 @@ async def delete_course(course_id: int, service: CourseService = Depends(get_cou
     Raises:
         HTTPException: If the course is not found (propagated from the service layer).
     """
-    _: dict = Depends(verify_token)
     return service.delete_course(course_id)
