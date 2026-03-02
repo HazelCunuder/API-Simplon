@@ -48,6 +48,14 @@ def get_enrollment(user_id: int, session_id: int, db: DBSession = Depends(get_db
         return UserSessionService(db).get_enrollment(user_id, session_id)
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
+    
+@router.patch("/{user_id}/{session_id}", response_model=EnrollmentResponse)
+def update_enrollment(user_id: int, session_id: int, payload: EnrollmentCreate, db: DBSession = Depends(get_db)):
+    try:        
+        _: dict = Depends(verify_token)
+        return UserSessionService(db).update_enrollment(user_id, session_id, payload)
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
 
 @router.delete("/{user_id}/{session_id}", status_code=204)
 def unenroll_student(user_id: int, session_id: int, db: DBSession = Depends(get_db)):

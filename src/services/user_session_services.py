@@ -44,6 +44,45 @@ class UserSessionService:
             raise ValueError(f"Cannot unenroll from a session that has already started")
 
         self.user_session_repo.unenroll(user_id, session_id)
+    
+    def update_enrollment(self, user_id: int, session_id: int, payload) -> UserSession:
+        """
+        Update an enrollment record for a user in a session.
+        
+        This method updates the enrollment details for a specific user in a training session.
+        It performs validation checks to ensure the enrollment exists and the session is still active
+        before allowing the update.
+        
+        Args:
+            user_id (int): The unique identifier of the user whose enrollment is being updated.
+            session_id (int): The unique identifier of the session to update enrollment for.
+            payload: The data containing the fields to be updated for the enrollment.
+        
+        Returns:
+            UserSession: The updated UserSession object containing the new enrollment details.
+        
+        Raises:
+            ValueError: If the enrollment is not found for the given user and session combination.
+            ValueError: If the session does not exist.
+            ValueError: If the session has already ended (end_date is on or before today).
+        
+        Note:
+            The method prevents updates to enrollments in sessions that have already concluded,
+            ensuring data integrity for past training sessions.
+        """
+        enrollment = self.user_session_repo.get_by_user_and_session(user_id, session_id)
+        if not enrollment:
+            raise ValueError(f"Enrollment not found for user {user_id} and session {session_id}")
+
+        session = self.session_repo.get_by_id(session_id)
+        if not session:
+            raise ValueError(f"Session {session_id} not found")
+
+        from datetime import date
+        if session.end_date <= date.today():
+            raise ValueError(f"Cannot update enrollment for a session that has already ended")
+
+        return self.user_session_repo.update_enrollment(user_id, session_id, payload)
 
     def get_sessions_by_student(self, user_id: int) -> list[UserSession]:
         user = self.user_repo.get_by_id(user_id)
