@@ -6,10 +6,6 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 from ..model.database import Base, get_db
-from ..schemas.courses_schema import CoursesCreateSchema, ModifyCoursesSchema
-from ..schemas.sessions_schema import SessionCreate, SessionUpdate
-from ..schemas.user_schema import UserCreate, UserUpdate
-from ..schemas.user_session_schema import EnrollmentCreate
 from ..api.v1.endpoints.courses_endpoints import router as courses_router
 from ..api.v1.endpoints.session_endpoints import router as session_router
 from ..api.v1.endpoints.user_endpoints import router as user_router
@@ -95,7 +91,6 @@ class TestSessionEndpoints:
 
     def test_create_session_requires_auth(self, client):
         payload = {
-            "teacher_id": 1,
             "course_id": 1,
             "start_date": str(date.today()),
             "end_date": str(date.today() + timedelta(days=30)),

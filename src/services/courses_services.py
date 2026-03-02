@@ -1,7 +1,4 @@
 from repositories.course_repository import CourseRepository
-from fastapi import Depends
-from sqlalchemy.orm import Session
-from model.database import Base
 from schemas.courses_schema import CoursesCreateSchema, ModifyCoursesSchema, ShowCoursesSchema, ShowSimpleCourseInfoSchema
 
 class CourseService:

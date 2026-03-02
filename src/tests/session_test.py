@@ -2,10 +2,8 @@ import pytest
 from datetime import date, timedelta
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session
-from sqlalchemy.pool import StaticPool
+from sqlalchemy.orm import sessionmaker
 from model.database import Base, get_db
-from model import Session as SessionModel
 from schemas.sessions_schema import SessionCreate, SessionUpdate, SessionRead
 from services.session_services import SessionService
 from repositories.session_repository import SessionRepository
@@ -67,7 +65,6 @@ def get_valid_end_date():
 class TestSessionRepository:
     def test_create_session(self, session_repository):
         session_data = SessionCreate(
-            teacher_id=1,
             course_id=1,
             start_date=get_valid_start_date(),
             end_date=get_valid_end_date(),
@@ -76,13 +73,11 @@ class TestSessionRepository:
         session = session_repository.create(session_data)
         
         assert session.id is not None
-        assert session.teacher_id == 1
         assert session.course_id == 1
         assert session.capacity == 30
 
     def test_get_by_id_existing(self, session_repository):
         session_data = SessionCreate(
-            teacher_id=1,
             course_id=1,
             start_date=get_valid_start_date(),
             end_date=get_valid_end_date(),
@@ -100,7 +95,6 @@ class TestSessionRepository:
 
     def test_update_session(self, session_repository):
         session_data = SessionCreate(
-            teacher_id=1,
             course_id=1,
             start_date=get_valid_start_date(),
             end_date=get_valid_end_date(),
@@ -121,7 +115,6 @@ class TestSessionRepository:
 
     def test_delete_session(self, session_repository):
         session_data = SessionCreate(
-            teacher_id=1,
             course_id=1,
             start_date=get_valid_start_date(),
             end_date=get_valid_end_date(),
@@ -143,7 +136,6 @@ class TestSessionRepository:
 class TestSessionService:
     def test_get_session_valid(self, session_service, session_repository):
         session_data = SessionCreate(
-            teacher_id=1,
             course_id=1,
             start_date=get_valid_start_date(),
             end_date=get_valid_end_date(),
@@ -161,7 +153,6 @@ class TestSessionService:
 
     def test_create_session(self, session_service):
         session_data = SessionCreate(
-            teacher_id=1,
             course_id=1,
             start_date=get_valid_start_date(),
             end_date=get_valid_end_date(),
@@ -170,11 +161,9 @@ class TestSessionService:
         result = session_service.create_session(session_data)
         
         assert result.id is not None
-        assert result.teacher_id == 1
 
     def test_create_duplicate_session(self, session_service):
         session_data = SessionCreate(
-            teacher_id=1,
             course_id=1,
             start_date=get_valid_start_date(),
             end_date=get_valid_end_date(),
@@ -187,7 +176,6 @@ class TestSessionService:
 
     def test_update_session(self, session_service, session_repository):
         session_data = SessionCreate(
-            teacher_id=1,
             course_id=1,
             start_date=get_valid_start_date(),
             end_date=get_valid_end_date(),
@@ -207,7 +195,6 @@ class TestSessionService:
 
     def test_delete_session(self, session_service, session_repository):
         session_data = SessionCreate(
-            teacher_id=1,
             course_id=1,
             start_date=get_valid_start_date(),
             end_date=get_valid_end_date(),
@@ -226,7 +213,6 @@ class TestSessionService:
 class TestSessionSchemas:
     def test_session_create_valid(self):
         data = SessionCreate(
-            teacher_id=1,
             course_id=1,
             start_date=get_valid_start_date(),
             end_date=get_valid_end_date(),
@@ -237,7 +223,6 @@ class TestSessionSchemas:
     def test_session_create_invalid_capacity(self):
         with pytest.raises(Exception):
             SessionCreate(
-                teacher_id=1,
                 course_id=1,
                 start_date=get_valid_start_date(),
                 end_date=get_valid_end_date(),
@@ -247,7 +232,6 @@ class TestSessionSchemas:
     def test_session_create_invalid_dates(self):
         with pytest.raises(Exception):
             SessionCreate(
-                teacher_id=1,
                 course_id=1,
                 start_date=get_valid_end_date(),
                 end_date=get_valid_start_date(),
@@ -257,7 +241,6 @@ class TestSessionSchemas:
     def test_session_create_same_dates(self):
         with pytest.raises(Exception):
             SessionCreate(
-                teacher_id=1,
                 course_id=1,
                 start_date=get_valid_start_date(),
                 end_date=get_valid_start_date(),
@@ -266,14 +249,12 @@ class TestSessionSchemas:
 
     def test_session_update_partial(self):
         data = SessionUpdate(capacity=50)
-        assert data.teacher_id is None
         assert data.capacity == 50
 
 
 class TestSessionEndpoints:
     def test_get_session_endpoint(self, client, session_repository):
         session_data = SessionCreate(
-            teacher_id=1,
             course_id=1,
             start_date=get_valid_start_date(),
             end_date=get_valid_end_date(),
@@ -286,7 +267,6 @@ class TestSessionEndpoints:
 
     def test_create_session_endpoint(self, client):
         payload = {
-            "teacher_id": 1,
             "course_id": 1,
             "start_date": str(get_valid_start_date()),
             "end_date": str(get_valid_end_date()),
@@ -297,7 +277,6 @@ class TestSessionEndpoints:
 
     def test_update_session_endpoint(self, client, session_repository):
         session_data = SessionCreate(
-            teacher_id=1,
             course_id=1,
             start_date=get_valid_start_date(),
             end_date=get_valid_end_date(),

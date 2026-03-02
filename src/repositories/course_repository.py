@@ -2,9 +2,8 @@ from typing import List, Optional
 from fastapi import Depends
 from sqlalchemy.orm import Session
 from model.database import get_db
-
 from model.course import Course
-from schemas.courses_schema import CoursesCreateSchema, ModifyCoursesSchema, ShowCoursesSchema, ShowSimpleCourseInfoSchema
+from schemas.courses_schema import CoursesCreateSchema, ModifyCoursesSchema
 
 class CourseRepository:
     """

@@ -6,7 +6,6 @@ from model.session import Session
 from model.user_session import UserSession
 from services.user_session_services import UserSessionService
 
-
 # --- Fixtures ---
 
 @pytest.fixture
@@ -47,7 +46,6 @@ def make_user(id=1, role=Role.STUDENT):
 def make_session(id=1, capacity=10, start_date=None, end_date=None):
     session = MagicMock(spec=Session)
     session.id = id
-    session.teacher_id = 99
     session.capacity = capacity
     session.start_date = start_date or date.today() + timedelta(days=7)
     session.end_date = end_date or date.today() + timedelta(days=30)
