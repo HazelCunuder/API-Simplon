@@ -3,6 +3,7 @@ from model import User
 from schemas.user_schema import UserCreate, UserUpdate
 from utils.security import hash_password
 from typing import List
+from datetime import date
 
 class UserRepository:
     def __init__(self, db: Session):
@@ -60,3 +61,12 @@ class UserRepository:
         db_user.is_active = False
         self.db.commit()
         return True
+
+    def update_last_login(self, user_id: int) -> User | None:
+        db_user = self.db.query(User).filter(User.id == user_id).first()
+
+        db_user.last_login_date = date.today()
+
+        self.db.commit()
+        self.db.refresh(db_user)
+        return db_user
