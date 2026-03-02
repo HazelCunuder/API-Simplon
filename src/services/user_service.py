@@ -4,7 +4,7 @@ from fastapi import Depends, status, HTTPException
 from sqlalchemy.orm import Session
 from model.database import get_db
 from schemas.user_schema import UserCreate, UserUpdate, UserRead
-
+from datetime import date, timedelta
 
 class UserService:
     def __init__(self, db: Session = Depends(get_db)):
@@ -40,5 +40,16 @@ class UserService:
     def delete_user(self, user_id: int):
         return self.repo.delete(user_id)
     
+    
+    def delete_inactive_user_data(self):
+        users = self.repo.get_all_users()
+        current_date = date.today()
+
+        for user in users:
+            if user.last_login_date is None:
+                continue
+            if user.last_login_date + timedelta(days=1095) < current_date:
+                self.repo.delete(user.id)
+
     def soft_delete_user(self, user_id: int):
         return self.repo.soft_delete(user_id)
