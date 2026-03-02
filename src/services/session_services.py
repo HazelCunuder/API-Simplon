@@ -68,7 +68,6 @@ class SessionService:
             SessionModel: The created session object with database-generated ID.
         """
         db_session = self.repo.db.query(SessionModel).filter(
-            SessionModel.teacher_id == session_data.teacher_id,
             SessionModel.course_id == session_data.course_id,
             SessionModel.start_date == session_data.start_date,
             SessionModel.end_date == session_data.end_date
@@ -76,7 +75,6 @@ class SessionService:
         
         if not db_session:
             db_session = SessionModel(
-                teacher_id=session_data.teacher_id,
                 course_id=session_data.course_id,
                 start_date=session_data.start_date,
                 end_date=session_data.end_date,

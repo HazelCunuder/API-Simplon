@@ -1,6 +1,9 @@
 from fastapi import APIRouter, status, Depends
-from schemas.user_schema import UserCreate, UserUpdate
+
+from model.user import Role
+from schemas.user_schema import UserCreate, UserUpdate, UserRead
 from services.user_service import UserService
+from utils.permission_handler import role_checker
 from utils.security import verify_token
 
 router = APIRouter(prefix="/user", tags=["user"])
@@ -20,7 +23,7 @@ async def create_user(
 ):
     return service.create_user(user)
 
-@router.patch("/{user_id}", status_code=status.HTTP_200_OK)
+@router.patch("/{user_id}", response_model=UserRead, status_code=status.HTTP_200_OK)
 async def update_user(
     user_id: int,
     user: UserUpdate,
@@ -33,6 +36,7 @@ async def update_user(
 async def delete_user(
     user_id: int,
     _: dict = Depends(verify_token),
+    __ = Depends(role_checker(Role.ADMIN)),
     service: UserService = Depends()
 ):
     return service.delete_user(user_id)
