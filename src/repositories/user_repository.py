@@ -2,6 +2,7 @@ from sqlalchemy.orm import Session
 from model import User
 from schemas.user_schema import UserCreate, UserUpdate
 from utils.security import hash_password
+from typing import List
 
 class UserRepository:
     def __init__(self, db: Session):
@@ -47,3 +48,6 @@ class UserRepository:
         self.db.delete(db_user)
         self.db.commit()
         return True
+    
+    def get_all_users(self) -> List[User]:
+        return self.db.query(User).all()

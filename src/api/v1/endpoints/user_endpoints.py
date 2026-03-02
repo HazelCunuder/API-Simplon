@@ -36,3 +36,7 @@ async def delete_user(
     service: UserService = Depends()
 ):
     return service.delete_user(user_id)
+
+@router.delete("/delete-inactive-users")
+async def delete_inactive_users(_: dict = Depends(verify_token), service: UserService = Depends()):
+    return service.delete_inactive_user_data()
