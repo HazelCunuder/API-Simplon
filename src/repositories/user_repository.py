@@ -47,3 +47,12 @@ class UserRepository:
         self.db.delete(db_user)
         self.db.commit()
         return True
+    
+    def soft_delete(self, user_id: int) -> bool:
+        db_user = self.db.query(User).filter(User.id == user_id).first()
+        if not db_user:
+            return False
+
+        db_user.is_active = False
+        self.db.commit()
+        return True

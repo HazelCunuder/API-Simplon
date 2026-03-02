@@ -36,3 +36,11 @@ async def delete_user(
     service: UserService = Depends()
 ):
     return service.delete_user(user_id)
+
+@router.patch("/soft-delete/{user_id}", status_code=status.HTTP_200_OK)
+async def soft_delete_user(
+    user_id: int,
+    _: dict = Depends(verify_token),
+    service: UserService = Depends()
+):
+    return service.soft_delete_user(user_id)
