@@ -59,3 +59,10 @@ class UserSessionRepository:
 
     def get_all(self) -> list[UserSession]:
         return list(self.db.scalars(select(UserSession)))
+    
+    def soft_delete(self, enrollment_id: int) -> None:
+        enrollment = self.get_by_id(enrollment_id)
+        if not enrollment:
+            raise ValueError(f"Enrollment {enrollment_id} not found")
+        enrollment.is_active = False
+        self.db.commit()

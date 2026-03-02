@@ -11,6 +11,7 @@ from repositories.user_repository import UserRepository
 from utils.security import hash_password
 import os
 from dotenv import load_dotenv
+from datetime import date
 
 @pytest.fixture
 def db():
@@ -230,4 +231,21 @@ class TestUserService:
         
         service = UserService(db)
         result = service.delete_user(user.id)
+        assert result is True
+
+    def test_delete_inactive_users(self, db:Session):
+        user = User(
+            first_name="Delete",
+            last_name="User",
+            email="delete@example.com",
+            password=hash_password("password"),
+            role=Role.STUDENT,
+            register_date= date(2020,10,24),
+            last_login_date= date(2022, 1, 30)
+        )
+        db.add(user)
+        db.commit()
+
+        service = UserService(db)
+        result = service.delete_inactive_user_data()
         assert result is True

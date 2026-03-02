@@ -98,3 +98,22 @@ class SessionRepository:
         self.db.delete(db_session)
         self.db.commit()
         return True
+    
+    def soft_delete(self, session_id: int) -> bool:
+        """
+        Soft deletes a session by marking its status as 'cancelled'.
+
+        Args:
+            session_id (int): The unique identifier of the session to soft delete.
+        Returns:
+            bool: True if the soft deletion was successful, False if the session
+                  was not found or could not be updated.
+        """        
+        db_session = self.db.query(SessionModel).filter(SessionModel.id == session_id).first()
+        if not db_session:
+            return False
+
+        db_session.is_active = False
+        self.db.commit()
+        self.db.refresh(db_session)
+        return True

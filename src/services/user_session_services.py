@@ -101,3 +101,9 @@ class UserSessionService:
         if not enrollment:
             raise ValueError(f"Enrollment not found")
         return enrollment
+    
+    def soft_delete_enrollment(self, enrollment_id: int) -> None:
+        enrollment = self.user_session_repo.get_by_id(enrollment_id)
+        if not enrollment:
+            raise ValueError(f"Enrollment {enrollment_id} not found")
+        self.user_session_repo.soft_delete(enrollment_id)

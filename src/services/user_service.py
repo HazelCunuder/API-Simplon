@@ -49,3 +49,6 @@ class UserService:
                 return self.repo.delete(user.id)
             else:
                 continue
+            
+    def soft_delete_user(self, user_id: int):
+        return self.repo.soft_delete(user_id)
