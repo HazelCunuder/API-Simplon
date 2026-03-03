@@ -1,4 +1,4 @@
-from fastapi import APIRouter, status, Depends
+from fastapi import APIRouter, status, Depends,Query
 from model.user import Role
 from schemas.user_schema import UserCreate, UserUpdate, UserRead
 from services.user_service import UserService
@@ -34,16 +34,9 @@ async def update_user(
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(
     user_id: int,
+    soft_delete: bool = Query(False, alias="soft-delete", description="If True, mark as inactive. If False, permanently delete."),
     _: dict = Depends(verify_token),
-    __ = Depends(role_checker(Role.ADMIN)),
+    __: dict = Depends(role_checker(Role.ADMIN)),
     service: UserService = Depends()
 ):
-    return service.delete_user(user_id)
-
-@router.patch("/soft-delete/{user_id}", status_code=status.HTTP_200_OK)
-async def soft_delete_user(
-    user_id: int,
-    _: dict = Depends(verify_token),
-    service: UserService = Depends()
-):
-    return service.soft_delete_user(user_id)
+    return service.delete_user(user_id, soft_delete)
