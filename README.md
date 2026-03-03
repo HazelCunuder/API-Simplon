@@ -11,13 +11,7 @@ API Simplon est une **API REST professionnelle** conçue pour digitaliser la ges
 
 ## 🎯 Description
 
-Actuellement, Simplon gère ses opérations de manière disparate :
-
-- ❌ Les inscriptions via des tableurs
-- ❌ Le suivi pédagogique dispersé dans plusieurs outils
-- ❌ La gestion des sessions manuelle et peu flexible
-
-**Notre solution** est une API REST centralisée permettant de :
+**Notre application** est une API REST centralisée permettant de :
 
 - ✅ Gérer les formations et leurs contenus
 - ✅ Planifier et administrer les sessions de formation
@@ -28,7 +22,7 @@ Actuellement, Simplon gère ses opérations de manière disparate :
 ### Fonctionnalités principales
 
 | Fonctionnalité | Description |
-|;---;|;---;|
+| :---: | :---: |
 | **Authentification** | Connexion sécurisée avec JWT |
 | **Gestion des utilisateurs** | Création, modification et suppression d'utilisateurs |
 | **Gestion des formations** | CRUD complet pour les formations |
