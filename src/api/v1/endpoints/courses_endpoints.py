@@ -97,7 +97,7 @@ async def create_course(
 @router.delete("/{course_id}")
 async def delete_course(
     course_id: int,
-    soft_delete: bool = Query(False, alias="soft-delete", escription="If True, mark as inactive. If False, permanently delete."),
+    soft_delete: bool = Query(False, alias="soft-delete", description="If True, mark as inactive. If False, permanently delete."),
     _: dict = Depends(verify_token),
     service: CourseService = Depends(get_course_service)
 ):
