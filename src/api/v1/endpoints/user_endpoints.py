@@ -34,20 +34,12 @@ async def update_user(
 @router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_user(
     user_id: int,
+    delete_type: str = "false",
     _: dict = Depends(verify_token),
-    __ = Depends(role_checker(Role.ADMIN)),
+    __: dict = Depends(role_checker(Role.ADMIN)),
     service: UserService = Depends()
 ):
-    return service.delete_user(user_id)
-
-@router.delete("/delete-inactive-users")
-async def delete_inactive_users(_: dict = Depends(verify_token), service: UserService = Depends()):
-    return service.delete_inactive_user_data()
-
-@router.patch("/soft-delete/{user_id}", status_code=status.HTTP_200_OK)
-async def soft_delete_user(
-    user_id: int,
-    _: dict = Depends(verify_token),
-    service: UserService = Depends()
-):
-    return service.soft_delete_user(user_id)
+    if delete_type == "true":
+        return service.delete_user(user_id)
+    else:
+        return service.soft_delete_user(user_id)
