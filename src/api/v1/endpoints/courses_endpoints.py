@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from services.courses_services import CourseService
 from repositories.course_repository import CourseRepository
 from schemas.courses_schema import CoursesCreateSchema, ModifyCoursesSchema, ShowCoursesSchema, ShowSimpleCourseInfoSchema
@@ -7,7 +7,6 @@ from sqlalchemy.orm import Session
 from utils.security import verify_token
 
 router = APIRouter(prefix="/courses", tags=["courses"])
-
 
 def get_course_service(db: Session = Depends(get_db)) -> CourseService:
     """
@@ -24,7 +23,6 @@ def get_course_service(db: Session = Depends(get_db)) -> CourseService:
     """
     return CourseService(repo=CourseRepository(db=db))
 
-
 @router.get("/", response_model=ShowCoursesSchema)
 async def get_courses(service: CourseService = Depends(get_course_service)):
     """
@@ -37,7 +35,6 @@ async def get_courses(service: CourseService = Depends(get_course_service)):
         ShowCoursesSchema: A list of all courses serialized with full course info.
     """
     return service.get_courses()
-
 
 @router.get("/{course_id}")
 async def get_course(course_id: int, service: CourseService = Depends(get_course_service)):
@@ -56,27 +53,7 @@ async def get_course(course_id: int, service: CourseService = Depends(get_course
     """
     return service.get_course(course_id)
 
-
-@router.get("/{course_id}/simple-info", response_model=ShowSimpleCourseInfoSchema)
-async def get_simple_course_info(course_id: int, service: CourseService = Depends(get_course_service)):
-    """
-    Retrieve simplified course information by course ID.
-
-    Args:
-        course_id (int): The ID of the course to retrieve.
-        service (CourseService): The course service instance, injected via dependency.
-
-    Returns:
-        ShowSimpleCourseInfoSchema: A simplified view of the course containing
-                                    title, duration, and level.
-
-    Raises:
-        HTTPException: If the course is not found (propagated from the service layer).
-    """
-    return service.get_simple_course_info(course_id)
-
-
-@router.put("/update/{course_id}")
+@router.put("/{course_id}")
 async def update_course(course_id: int, course: ModifyCoursesSchema, service: CourseService = Depends(get_course_service)):
     """
     Update an existing course by its ID.
@@ -97,9 +74,12 @@ async def update_course(course_id: int, course: ModifyCoursesSchema, service: Co
     _: dict = Depends(verify_token)
     return service.update_course(course_id, course)
 
-
-@router.post("/create-course")
-async def create_course(course: CoursesCreateSchema, _: dict = Depends(verify_token), service: CourseService = Depends(get_course_service)):
+@router.post("/")
+async def create_course(
+    course: CoursesCreateSchema,
+    _: dict = Depends(verify_token),
+    service: CourseService = Depends(get_course_service)
+):
     """
     Create a new course.
 
@@ -114,9 +94,13 @@ async def create_course(course: CoursesCreateSchema, _: dict = Depends(verify_to
     """
     return service.create(course)
 
-
-@router.delete("/delete/{course_id}")
-async def delete_course(course_id: int, _: dict = Depends(verify_token), service: CourseService = Depends(get_course_service)):
+@router.delete("/{course_id}")
+async def delete_course(
+    course_id: int,
+    soft_delete: bool = Query(False, alias="soft-delete", escription="If True, mark as inactive. If False, permanently delete."),
+    _: dict = Depends(verify_token),
+    service: CourseService = Depends(get_course_service)
+):
     """
     Delete a course by its ID.
 
@@ -124,6 +108,7 @@ async def delete_course(course_id: int, _: dict = Depends(verify_token), service
 
     Args:
         course_id (int): The ID of the course to delete.
+        soft_delete (bool, optional): If True, mark as inactive. If False, permanently delete.
         service (CourseService): The course service instance, injected via dependency.
 
     Returns:
@@ -132,21 +117,4 @@ async def delete_course(course_id: int, _: dict = Depends(verify_token), service
     Raises:
         HTTPException: If the course is not found (propagated from the service layer).
     """
-    return service.delete_course(course_id)
-
-@router.patch("/delete-soft/{course_id}")
-async def soft_delete_course(course_id: int, _: dict = Depends(verify_token), service: CourseService = Depends(get_course_service)):
-    """
-    Soft delete a course by its ID.
-
-    Requires a valid authentication token.
-
-    Args:
-        course_id (int): The ID of the course to soft delete.
-        service (CourseService): The course service instance, injected via dependency.
-
-    Returns:
-        bool: True if the course was successfully soft deleted. 
-    Raises:        HTTPException: If the course is not found (propagated from the service layer).
-    """
-    return service.soft_delete_course(course_id)
+    return service.delete_course(course_id, soft_delete)

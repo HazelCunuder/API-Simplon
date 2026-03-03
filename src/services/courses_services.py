@@ -45,23 +45,6 @@ class CourseService:
             raise ValueError(f"Course with ID {course_id} does not exist.")
         return self.repo.get_course_by_id(course_id)
 
-    def get_simple_course_info(self, course_id: int):
-        """
-        Retrieve a simplified view of a course by its ID.
-
-        Args:
-            course_id (int): The ID of the course to retrieve.
-
-        Returns:
-            A simplified course info object for the given ID.
-
-        Raises:
-            ValueError: If no course with the given ID exists.
-        """
-        if self.repo.get_course_by_id(course_id) is None:
-            raise ValueError(f"Course with ID {course_id} does not exist.")
-        return self.repo.get_simple_course_info(course_id)
-
     def create(self, course: CoursesCreateSchema):
         """
         Create a new course.
@@ -95,36 +78,27 @@ class CourseService:
             raise ValueError(f"Course with ID {course_id} does not exist.")
         return self.repo.update_course(course_id, course.model_dump())
 
-    def delete_course(self, course_id: int):
+    def delete_course(
+        self,
+        course_id: int,
+        soft_delete: bool,
+    ):
         """
         Delete a course by its ID.
 
         Args:
             course_id (int): The ID of the course to delete.
-
+            soft_delete (bool): If True, mark as inactive. If False, permanently delete.
         Returns:
             The result of the deletion operation from the repository.
 
         Raises:
             ValueError: If no course with the given ID exists.
         """
-        if self.repo.get_course_by_id(course_id) is None:
+        if not self.repo.get_course_by_id(course_id):
             raise ValueError(f"Course with ID {course_id} does not exist.")
-        return self.repo.delete_course(course_id)
-    
-    def soft_delete_course(self, course_id: int):
-        """
-        Soft delete a course by its ID.
 
-        Args:
-            course_id (int): The ID of the course to soft delete.
-
-        Returns:
-            The result of the soft deletion operation from the repository.
-
-        Raises:
-            ValueError: If no course with the given ID exists.
-        """
-        if self.repo.get_course_by_id(course_id) is None:
-            raise ValueError(f"Course with ID {course_id} does not exist.")
-        return self.repo.soft_delete(course_id)
+        if soft_delete:
+            return self.repo.soft_delete(course_id)
+        else:
+            return self.repo.delete_course(course_id)

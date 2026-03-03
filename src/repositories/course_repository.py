@@ -23,7 +23,7 @@ class CourseRepository:
         """
         self.db = db
 
-    def get_all_courses(self) -> List[Course]:
+    def get_all_courses(self):
         """
         Retrieve all courses from the database.
 
@@ -32,21 +32,9 @@ class CourseRepository:
         """
         return self.db.query(Course).all()
 
-    def get_course_by_id(self, course_id: int) -> Optional[Course]:
+    def get_course_by_id(self, course_id: int):
         """
         Retrieve a single course by its ID.
-
-        Args:
-            course_id (int): The ID of the course to look up.
-
-        Returns:
-            Optional[Course]: The matching Course record, or None if not found.
-        """
-        return self.db.query(Course).filter(Course.id == course_id).first()
-
-    def get_simple_course_info(self, course_id: int) -> Optional[Course]:
-        """
-        Retrieve a course by its ID for simplified info display.
 
         Args:
             course_id (int): The ID of the course to look up.
