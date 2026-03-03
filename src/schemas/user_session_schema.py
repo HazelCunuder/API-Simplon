@@ -6,7 +6,6 @@ class UserDetail(BaseModel):
     id: int
     first_name: str
     last_name: str
-    email: str
     role: Role
 
     class Config:
@@ -16,7 +15,6 @@ class UserDetail(BaseModel):
 class EnrollmentCreate(BaseModel):
     user_id: int
     session_id: int
-
 
 class EnrollmentResponse(BaseModel):
     id: int
@@ -32,22 +30,6 @@ class EnrollmentDetail(BaseModel):
     id: int
     enrollment_date: date
     user: UserDetail
-
-    class Config:
-        from_attributes = True
-
-
-class StudentsBySessionResponse(BaseModel):
-    session_id: int
-    students: list[EnrollmentDetail]
-
-    class Config:
-        from_attributes = True
-
-
-class SessionsByStudentResponse(BaseModel):
-    user_id: int
-    sessions: list[EnrollmentDetail]
 
     class Config:
         from_attributes = True
