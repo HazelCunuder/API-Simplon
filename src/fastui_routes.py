@@ -26,7 +26,7 @@ router = APIRouter(prefix="/admin", include_in_schema=False)
 NAVBAR_TEMPLATE = """
 <nav class="navbar">
     <div class="navbar-container">
-        <h1 class="navbar-logo">Simplon</h1>
+        <img src="static/simplon_logo.svg"></img>
         <div class="navbar-menu">
             <ul class="navbar-nav">
                 <li><a href="/admin/users" class="nav-link">Utilisateurs</a></li>
@@ -100,7 +100,7 @@ async def dashboard_home():
     <body>
         <nav class="navbar">
             <div class="navbar-container">
-                <h1 class="navbar-logo">Simplon</h1>
+                <img src="static/simplon_logo.svg"></img>
             </div>
         </nav>
 

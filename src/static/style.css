@@ -67,6 +67,12 @@ body {
     color: #ce0632;
 }
 
+.navbar-container img {
+    max-height: 50%;
+    width: auto;
+    display: block;
+}
+
 .navbar-menu {
     display: flex;
     align-items: center;
