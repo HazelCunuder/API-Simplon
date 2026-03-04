@@ -19,6 +19,15 @@ class SessionRepository:
         """
         self.db = db
 
+    def get_all_sessions(self):
+        """
+        Get all sessions.
+
+        Returns:
+            List[SessionModel]: A list of all sessions.
+        """
+        return self.db.query(SessionModel).all()
+
     def get_by_id(self, session_id: int):
         """
         Retrieves a single session by its unique identifier.
