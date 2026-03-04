@@ -1,7 +1,11 @@
 from fastapi import FastAPI, Request
 from api.v1.routers.api import api_router
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 from fastapi.middleware.cors import CORSMiddleware
+from fastui_routes import router as admin_router
+from fastui_crud_routes import router as crud_router
+from fastapi.staticfiles import StaticFiles
+from pathlib import Path
 
 from utils.exceptions import (
     AppError,
@@ -22,8 +26,9 @@ from utils.exceptions import (
     SessionAlreadyFullError 
 )
 
-
-app = FastAPI()
+app = FastAPI(
+    version="1.0.0"
+)
 
 origins = [
     "http://localhost",
@@ -39,7 +44,20 @@ app.add_middleware(
     allow_headers=["*"]
     )
 
+Path("static").mkdir(exist_ok=True)
+
+try:
+    app.mount("/admin/static", StaticFiles(directory="static"), name="static")
+except Exception as e:
+    print(f"Unable to mount static files: {e}")
+
 app.include_router(api_router)
+app.include_router(admin_router)
+app.include_router(crud_router)
+
+@app.get("/", response_class=RedirectResponse)
+async def root():
+    return RedirectResponse(url="/admin/")
 
 @app.exception_handler(AppError)
 async def app_exception_handler(request: Request, exc: AppError) -> JSONResponse:

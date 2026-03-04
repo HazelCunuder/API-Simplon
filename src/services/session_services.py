@@ -21,6 +21,9 @@ class SessionService:
         """
         self.repo = SessionRepository(db)
 
+    def get_all_sessions(self):
+        return self.repo.get_all_sessions()
+
     def get_session(self, session_id: int):
         """
         Retrieves a single session by its ID.

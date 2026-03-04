@@ -50,7 +50,7 @@ class UserRepository:
         self.db.commit()
         return True
     
-    def get_all_users(self) -> List[User]:
+    def get_all_users(self):
         return self.db.query(User).all()
     
     def soft_delete(self, user_id: int) -> bool:

@@ -10,6 +10,9 @@ class UserService:
     def __init__(self, db: Session = Depends(get_db)):
         self.repo = UserRepository(db)
 
+    def get_all_users(self):
+        return self.repo.get_all_users()
+
     def get_user(self, user_id: int):
         user = self.repo.get_by_id(user_id)
 

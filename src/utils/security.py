@@ -8,6 +8,7 @@ from fastapi import status
 from sqlalchemy.orm import Session
 from model import User
 from model.database import get_db
+from fastapi import Request
 
 # -- Token -- #
 
@@ -16,7 +17,8 @@ ALGORITHM = "HS256"
 
 oauth2_scheme = OAuth2PasswordBearer(
     tokenUrl="login",
-    description="JWT Bearer token"
+    description="JWT Bearer token",
+    auto_error=False # Prevents FastAPI from raising an error before searching for the token in cookies (dashboard).
 )
 
 def get_logged_user(
@@ -51,7 +53,19 @@ def create_access_token(data: dict, expires_delta: timedelta):
     return encoded_jwt
 
 
-async def verify_token(token: str = Depends(oauth2_scheme)) -> dict:
+async def verify_token(request: Request, token: str = Depends(oauth2_scheme)) -> dict:
+
+    # Search token in cookie (for dashboard)
+    if token is None:
+        token = request.cookies.get("access_token")
+
+    if token is None:
+        print("DEBUG: NO TOKEN FOUND")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Not authenticated",
+        )
+
     try:
         payload = jwt.decode(
             token,
